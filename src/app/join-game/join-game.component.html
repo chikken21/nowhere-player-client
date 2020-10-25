@@ -1,0 +1,9 @@
+<h2> Welcome to Nowhere! </h2>
+
+<p>Enter Your 4-Digit Game Code</p>
+<input #gameCode (keyup)="setGameCode(gameCode.value)">
+
+<p>Enter Your Player Name!</p>
+<input #playerName (keyup)="setPlayerName(playerName.value)"><br>
+
+<button (click)="joinGame(player.name, gameCode)">Join Game</button>
