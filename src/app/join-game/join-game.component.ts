@@ -15,10 +15,13 @@ export class JoinGameComponent implements OnInit {
   player: Player = new Player();
   gameCode: string;
   gameSession: GameSession;
-  gameSessions: GameSession[];
+  gameSessions;//: GameSession[];
 
   ngOnInit() {
     this.getGameSessions();
+    // console.log(this.gameSessions[0]);
+    // console.log(this.gameSessions[1]);
+    // console.log(this.gameSessions[2]);
   }
 
   setGameCode(gameCode: string) {
@@ -29,9 +32,6 @@ export class JoinGameComponent implements OnInit {
   setPlayerName(playerName: string) {
     this.player.name = playerName;
     console.log("Your name! " + this.player.name);
-    console.log(this.gameSessions[0].id);
-    console.log(this.gameSessions[1].id);
-    console.log(this.gameSessions[2].id);
   }
 
   getGameSessions = () =>
@@ -39,12 +39,16 @@ export class JoinGameComponent implements OnInit {
     .getGameSession()
     .subscribe(res =>(this.gameSessions = res));
 
-  joinGame(playerName: string, gameCode: string) {
-    // console.log("Joining game! " + this.gameCode + " " + this.player.name);
-    console.log("Joining game! " + playerName + " " + gameCode);
-    this.gameSessions.filter((gameCode) => {
-      
-    })    
+  joinGame(playerName: string, inputCode: string) {
+    this.gameSessions.filter(session => {
+      // console.log(session.payload.doc.data().gameSession.code);  
+      if( session.payload.doc.data().gameSession.code === this.gameCode ) {
+        console.log("A match!");
+        console.log(session.payload.doc.data().gameSession.code);
+        session.payload.doc.data().gameSession.players.push(this.player);
+        this.gameSessionService.updateGameSession(session);
+      }
+    })   
   }
 
 }

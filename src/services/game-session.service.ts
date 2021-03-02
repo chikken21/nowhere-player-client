@@ -22,7 +22,7 @@ export class GameSessionService {
   //    .collection("gameSessions", ref => ref.where('gameSession.code', '==', code)).snapshotChanges();
   // }
 
-  getGameSession(): Observable<GameSession> {
+  getGameSession(): Observable<any> {
     return this.firestore.collection("gameSessions").snapshotChanges();
   }
   
@@ -30,8 +30,9 @@ export class GameSessionService {
     return new Promise<any> ((resolve, reject) => {
       this.firestore
       .collection("gameSessions")
-      .doc(data.payload.doc.id)
-      .set({ completed: true }, { merge: true });
+      // .doc(data.payload.doc.id)
+      .doc(data.payload.doc.data().gameSession.code)
+      .set({ players: data.payload.doc.data().gameSession.players[0] });
     })
   }
 
